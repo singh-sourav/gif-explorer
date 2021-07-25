@@ -9,22 +9,6 @@
   color: white;
 }
 
-/* #gif-container {
-  display: grid;
-  margin-top: 100px;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(auto-fill, auto-fill);
-  grid-gap: 8px;
-  margin-right: 10px;
-  margin-left: 10px;
-}
-
-#gif-container > img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-} */
-
 #gif-query-input {
   border: 2px solid black;
   padding: 15px;
@@ -47,7 +31,7 @@
   cursor: pointer;
   padding: 10px;
   font-weight: bolder; 
-  border: 2px solid black;
+  border: 1px thin black;
 }
 
 #gif-dashboard {
@@ -56,14 +40,3 @@
   text-align: center;
 }
 
-/* @media screen and (min-width: 768px) {
-  #gif-container {
-    display: grid;
-    margin-top: 100px;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(auto-fill, 10vw);
-    grid-gap: 8px;
-    margin-right: 10px;
-    margin-left: 10px;
-  }
-} */
