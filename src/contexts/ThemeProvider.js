@@ -4,15 +4,14 @@ const ThemeContext = React.createContext();
 const themeFromLocalStorage = localStorage.getItem("theme");
 
 export function ThemeProvider(props) {
-
-  const [theme, setTheme] = React.useState(themeFromLocalStorage);
+  const [theme, setTheme] = React.useState(themeFromLocalStorage || "dark");
 
   /**
    * Storing the theme in localstorage for future visits
    */
   const updateTheme = (theme) => {
     setTheme(theme);
-    localStorage.setItem("theme",theme);
+    localStorage.setItem("theme", theme);
   };
 
   /**
