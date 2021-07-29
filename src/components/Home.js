@@ -28,26 +28,31 @@ function Home(props) {
     setQuery(searchText);
   }, 600);
 
+
   /**
    * Effect based upon query search
    * Reset the offset to 1.
-   * Offset Effect would handle the needful
+   * Triggers the actions for offset 1
    */
   React.useEffect(() => {
     setOffset(1);
-  }, [query]);
-
+    if (query) startGiphyFetch(1, query);
+    else startGiphyTrendingFetch(1);
+  }, [query,startGiphyFetch,startGiphyTrendingFetch]);
+// 
   /**
    *
    * Infinite Scrolling :
-   * Effect based upon offset
+   * Effect based upon offset ( >1 )
    * Keeping 'query' same when offset changes
    * If query is empty, it fetches the trending GIFS
    *
    */
   React.useEffect(() => {
+    if(offset>1){
     if (query) startGiphyFetch(offset, query);
     else startGiphyTrendingFetch(offset);
+    }
   }, [offset, startGiphyFetch, startGiphyTrendingFetch]);
 
   /**
