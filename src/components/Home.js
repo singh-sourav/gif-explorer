@@ -135,7 +135,6 @@ function Home(props) {
 
 const mapStateToProps = (state) => {
   return {
-    items: state.items,
     newItemsAdded: state.newItemsAdded,
   };
 };
