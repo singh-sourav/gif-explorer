@@ -1,4 +1,6 @@
 .row {
+  width: 70%;
+  margin: 0 auto;
   margin-top: 100px;
   display: flex;
   flex-wrap: wrap;
@@ -10,13 +12,13 @@
   box-sizing: border-box;
   flex: 25%;
   max-width: 25%;
-  padding: 0 4px;
+  padding: 0 8px;
 }
 
 .column div {
   border-radius: 5px;
   background-color: #3cb44b;
-  margin-top: 8px;
+  margin-top: 16px;
 }
 
 .column img {
