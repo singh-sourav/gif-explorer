@@ -10,8 +10,9 @@ import GIFContainer from "./GIFContainer";
 import CustomInput from "./CustomInput";
 
 function Home(props) {
-  const { startGiphyFetch, startGiphyTrendingFetch, items } = props;
+  const { startGiphyFetch, startGiphyTrendingFetch, newItemsAdded } = props;
   const loaderref = React.useRef();
+  const observer = React.useRef();
   const [offset, setOffset] = React.useState(1);
   const [query, setQuery] = React.useState("");
 
@@ -26,8 +27,7 @@ function Home(props) {
   const debouncedQuerySearch = useDebouncedCallback((e) => {
     const searchText = e.target.value;
     setQuery(searchText);
-  }, 600);
-
+  }, 200);
 
   /**
    * Effect based upon query search
@@ -38,8 +38,8 @@ function Home(props) {
     setOffset(1);
     if (query) startGiphyFetch(1, query);
     else startGiphyTrendingFetch(1);
-  }, [query,startGiphyFetch,startGiphyTrendingFetch]);
-// 
+  }, [query, startGiphyFetch, startGiphyTrendingFetch]);
+
   /**
    *
    * Infinite Scrolling :
@@ -49,9 +49,9 @@ function Home(props) {
    *
    */
   React.useEffect(() => {
-    if(offset>1){
-    if (query) startGiphyFetch(offset, query);
-    else startGiphyTrendingFetch(offset);
+    if (offset > 1) {
+      if (query) startGiphyFetch(offset, query);
+      else startGiphyTrendingFetch(offset);
     }
   }, [offset, startGiphyFetch, startGiphyTrendingFetch]);
 
@@ -71,7 +71,7 @@ function Home(props) {
    */
   const debouncedIntersectionCallback = useDebouncedCallback(
     intersectionCallback,
-    600
+    15
   );
 
   /**
@@ -80,19 +80,27 @@ function Home(props) {
    * The Observer should be re-created when the last GIF on webpage changes.
    * So, using [items] as dependency of this hook
    */
-  React.useEffect(() => {
-    const toBeObserved = loaderref.current;
-    const observer = new IntersectionObserver(debouncedIntersectionCallback, {
-      root: null,
-      threshold: 0,
-    });
+  React.useEffect(
+    () =>
+      setTimeout(() => {
+        const toBeObserved = loaderref.current;
+        observer.current = new IntersectionObserver(
+          debouncedIntersectionCallback,
+          {
+            root: null,
+            rootMargin: "100px",
+            threshold: 0,
+          }
+        );
 
-    if (toBeObserved) observer.observe(toBeObserved);
+        if (toBeObserved) observer.current.observe(toBeObserved);
 
-    return () => {
-      if (toBeObserved) observer.unobserve(toBeObserved);
-    };
-  }, [debouncedIntersectionCallback, items]);
+        return () => {
+          if (toBeObserved) observer.current.unobserve(toBeObserved);
+        };
+      }, 0),
+    [debouncedIntersectionCallback, newItemsAdded, loaderref]
+  );
 
   /**
    * Global Theme Logic is present in Theme provider
@@ -116,7 +124,11 @@ function Home(props) {
           lightText="Switch to Light Mode"
         />
       </div>
-      <GIFContainer items={items} loaderref={loaderref} />
+      <GIFContainer
+        gifsToAppend={newItemsAdded}
+        offset={offset}
+        loaderref={loaderref}
+      />
     </div>
   );
 }
@@ -124,6 +136,7 @@ function Home(props) {
 const mapStateToProps = (state) => {
   return {
     items: state.items,
+    newItemsAdded: state.newItemsAdded,
   };
 };
 
