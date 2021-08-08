@@ -3,7 +3,7 @@ import "./styles/GIFContainer.css";
 import ImageRenderer from "./ImageRenderer";
 
 function GIFContainer(props) {
-  const { gifsToAppend, loaderref, offset } = props;
+  const { gifsToAppend, loaderref, offset,loading } = props;
   const [results, setResults] = React.useState([[], [], [], []]);
 
   React.useEffect(() => {
@@ -64,18 +64,21 @@ function GIFContainer(props) {
     });
   };
 
+  if(loading)
+  return null
+
   return (
     <div className="row">
-      <div className="column" key={1}>
+      <div className="column" >
         {makeChunk(results[0])}
       </div>
-      <div className="column" key={2}>
+      <div className="column" >
         {makeChunk(results[1])}
       </div>
-      <div className="column" key={3}>
+      <div className="column" >
         {makeChunk(results[2])}
       </div>
-      <div className="column" key={4}>
+      <div className="column">
         {makeChunk(results[3], 3)}
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { startGiphyFetch, startGiphyTrendingFetch } from "../actions/giphy";
+import { startGiphyFetch, startGiphyTrendingFetch,fetchGiphyInProgress } from "../actions/giphy";
 import { bindActionCreators } from "redux";
 import useDebouncedCallback from "../hooks/useDebouncedCallback";
 import "./styles/Home.css";
@@ -10,7 +10,7 @@ import GIFContainer from "./GIFContainer";
 import CustomInput from "./CustomInput";
 
 function Home(props) {
-  const { startGiphyFetch, startGiphyTrendingFetch, newItemsAdded } = props;
+  const { startGiphyFetch, startGiphyTrendingFetch, newItemsAdded ,loading,fetchGiphyInProgress} = props;
   const loaderref = React.useRef();
   const observer = React.useRef();
   const [offset, setOffset] = React.useState(1);
@@ -36,6 +36,7 @@ function Home(props) {
    */
   React.useEffect(() => {
     setOffset(1);
+    fetchGiphyInProgress()
     if (query) startGiphyFetch(1, query);
     else startGiphyTrendingFetch(1);
   }, [query, startGiphyFetch, startGiphyTrendingFetch]);
@@ -71,7 +72,7 @@ function Home(props) {
    */
   const debouncedIntersectionCallback = useDebouncedCallback(
     intersectionCallback,
-    15
+    5
   );
 
   /**
@@ -128,6 +129,7 @@ function Home(props) {
         gifsToAppend={newItemsAdded}
         offset={offset}
         loaderref={loaderref}
+        loading={loading}
       />
     </div>
   );
@@ -136,6 +138,7 @@ function Home(props) {
 const mapStateToProps = (state) => {
   return {
     newItemsAdded: state.newItemsAdded,
+    loading:state.loading
   };
 };
 
@@ -144,6 +147,7 @@ const mapDispatchToProps = (dispatch) => {
     {
       startGiphyFetch,
       startGiphyTrendingFetch,
+      fetchGiphyInProgress
     },
     dispatch
   );
