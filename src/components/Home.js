@@ -85,6 +85,7 @@ function Home(props) {
     () =>
       setTimeout(() => {
         const toBeObserved = loaderref.current;
+        if(!observer.current){
         observer.current = new IntersectionObserver(
           debouncedIntersectionCallback,
           {
@@ -93,7 +94,7 @@ function Home(props) {
             threshold: 0,
           }
         );
-
+        }
         if (toBeObserved) observer.current.observe(toBeObserved);
 
         return () => {
